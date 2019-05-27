@@ -1,0 +1,24 @@
+div.regLog {
+  position: relative;
+  text-align: center;
+  max-width: 1280px;
+  min-width: 400px;
+  margin: 0 auto;
+}
+
+div.regLog h1 {
+  padding: 20px 0;
+}
+
+div.regLog form {
+  padding: 40px 50px 50px 50px;
+  border: 1px solid #e1e1e1;
+}
+
+div.regLog form label {
+  display: block;
+}
+
+div.regLog form label span {
+  margin-right: 10px;
+}
