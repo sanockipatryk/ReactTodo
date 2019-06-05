@@ -11,7 +11,7 @@ div.todo button.btn:focus {
   box-shadow: none;
 }
 
-div.todo .collapsePanel {
+div.todo #collapseTodoInformation {
   border: 1px solid grey;
   padding: 10px;
   border-bottom-left-radius: 0.25rem;
@@ -32,4 +32,33 @@ div.todo .todoBtnGroup button {
 div.todo .todoBtnGroup button:nth-child(1) {
   width: 100%;
   text-align: left;
+}
+/* div.todo .todoBtnGroup button:nth-child(1):hover {
+  background-color: ;
+} */
+
+div.todo .todoBtnGroup .todoTitleJumbotron {
+  padding: 0;
+  margin: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border: 1px solid grey;
+  width: 100%;
+}
+
+div.todo .todoBtnGroup .todoTitleJumbotron.completed {
+  background-color: #28a745;
+  color: white;
+  text-decoration: line-through;
+}
+
+div.todo .todoBtnGroup .todoTitleJumbotron p {
+  line-height: 40px;
+  padding: 0 10px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+p.pushRight {
+  text-align: right;
 }

@@ -15,12 +15,14 @@ const mapStateToProps = state => {
     user: state.user
   };
 };
+
 const mapDispatchToProps = dispatch => {
   return {
     onRequestLogin: () =>
       dispatch(setCurrentUser(jwtDecode(localStorage.getItem("token"))))
   };
 };
+
 class Login extends Component {
   state = {
     email: "",

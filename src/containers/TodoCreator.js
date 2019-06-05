@@ -1,32 +1,33 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
+import axios from "axios";
 
 import "../styles/TodoCreator.css";
 
 class TodoCreator extends Component {
-  state = {
-    todo: {
-      title: "",
-      description: "",
-      date: "",
-      important: false
-    }
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      todo: {
+        title: "",
+        dateUntil: "",
+        isImportant: false
+      }
+    };
+  }
 
   getMinDate = () => {
     const currentDate = new Date().toISOString();
-    let dateArray = [...currentDate];
-    dateArray = dateArray.splice(0, 16);
-    return dateArray.join("");
+    let dateArray = currentDate.slice(0, 16);
+    return dateArray;
   };
 
   getMaxDate = () => {
     let currentDate = new Date(
       Date.now() + 1000 * 60 * 60 * 24 * 366
     ).toISOString();
-    let dateArray = [...currentDate];
-    dateArray = dateArray.splice(0, 16);
-    return dateArray.join("");
+    let dateArray = currentDate.slice(0, 16);
+    return dateArray;
   };
 
   handleTitleInput = e => {
@@ -35,28 +36,43 @@ class TodoCreator extends Component {
     this.setState({ todo });
   };
 
-  handleDescriptionInput = e => {
+  handleDateUntilChange = e => {
     const todo = { ...this.state.todo };
-    todo.description = e.target.value;
+    todo.dateUntil = e.target.value;
     this.setState({ todo });
   };
 
-  handleDateChange = e => {
+  handleIsImportant = e => {
     const todo = { ...this.state.todo };
-    todo.date = e.target.value;
+    todo.isImportant = e.target.checked;
     this.setState({ todo });
   };
 
-  handleImportant = e => {
+  handleSubmitTodo = e => {
+    e.preventDefault();
     const todo = { ...this.state.todo };
-    todo.important = e.target.checked;
-    this.setState({ todo });
+    if (todo.title) {
+      axios
+        .post("http://localhost:5000/api/todo", {
+          title: todo.title,
+          dateUntil: todo.dateUntil,
+          isImportant: todo.isImportant
+        })
+        .then(response => {
+          this.setState({
+            title: "",
+            dateUntil: "",
+            isImportant: false
+          });
+          this.props.onHandleAddTodo();
+        });
+    }
   };
 
   render() {
     return (
       <div>
-        <Form onSubmit={this.handleLoginRequest}>
+        <Form onSubmit={this.handleSubmitTodo}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Title</Form.Label>
             <Form.Control
@@ -70,23 +86,13 @@ class TodoCreator extends Component {
               value={this.state.todo.title}
             />
           </Form.Group>
-          <Form.Group controlId="formDescription">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              as="textarea"
-              placeholder="Enter description"
-              name="description"
-              onChange={this.handleDescriptionInput}
-              value={this.state.todo.description}
-            />
-          </Form.Group>
           <Form.Group controlId="formDate">
             <Form.Label>To finish by...</Form.Label>
             <Form.Control
               type="datetime-local"
               name="date"
-              onChange={this.handleDateChange}
-              value={this.state.todo.date}
+              onChange={this.handleDateUntilChange}
+              value={this.state.todo.dateUntil}
               min={this.getMinDate()}
               max={this.getMaxDate()}
             />
@@ -96,8 +102,8 @@ class TodoCreator extends Component {
               type="checkbox"
               label={`Mark as important`}
               name="important"
-              onChange={this.handleImportant}
-              checked={this.state.todo.important}
+              onChange={this.handleIsImportant}
+              checked={this.state.todo.isImportant}
             />
           </Form.Group>
 

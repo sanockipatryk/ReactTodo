@@ -1,47 +1,79 @@
 import React, { Component } from "react";
-import { ButtonGroup, Button, Collapse } from "react-bootstrap";
+import { ButtonGroup, Button, Jumbotron } from "react-bootstrap";
+import TodoEditor from "./TodoEditor";
 import "../styles/Todo.css";
 
 class Todo extends Component {
-  state = {
-    open: false,
-    todo: {
-      title: "make something new for your future",
-      description:
-        "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repudiandae nulla nesciunt, maxime iste ducimus accusantium optio nobis neque cumque dolorum excepturi pariatur, odio culpa ipsum voluptatum et obcaecati laboriosam doloribus!",
-      dateAdded: new Date(),
-      dateUntil: new Date(),
-      important: true
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      showModalEdit: false
+    };
+  }
+
+  handleClose = () => {
+    this.setState({ showModalEdit: false });
   };
+
+  handleShow = () => {
+    this.setState({ showModalEdit: true });
+  };
+
   render() {
-    const { open, todo } = this.state;
+    const {
+      title,
+      dateAdded,
+      dateUntil,
+      dateFinished,
+      isCompleted,
+      isImportant,
+      todoId,
+      onDelete,
+      onComplete
+    } = this.props;
     return (
       <div className="todo">
-        <ButtonGroup className="todoBtnGroup" aria-label="Basic example">
-          <Button
-            variant={open ? "dark" : "outline-dark"}
-            onClick={() => this.setState({ open: !open })}
-            aria-controls="example-collapse-text"
-            aria-expanded={open}
+        <ButtonGroup className="todoBtnGroup">
+          <Jumbotron
+            className={
+              isCompleted
+                ? "todoTitleJumbotron completed"
+                : "todoTitleJumbotron"
+            }
+            title={
+              isCompleted
+                ? `Finished ${new Date(dateFinished).toLocaleString()}`
+                : `Added ${new Date(dateAdded).toLocaleString()}`
+            }
+            fluid
           >
-            {todo.title}
-          </Button>
-          <Button variant="success">
-            <i className="far fa-check-square" />
-          </Button>
-          <Button variant="primary">
-            <i className="far fa-edit" />
-          </Button>
-          <Button variant="danger">
+            <p>{title}</p>
+          </Jumbotron>
+          {isCompleted ? null : (
+            <>
+              <Button variant="success" onClick={() => onComplete(todoId)}>
+                <i className="far fa-check-square" />
+              </Button>
+              <Button variant="primary" onClick={this.handleShow}>
+                <i className="far fa-edit" />
+              </Button>
+            </>
+          )}
+          <Button variant="danger" onClick={() => onDelete(todoId)}>
             <i className="far fa-trash-alt" />
           </Button>
         </ButtonGroup>
-        <Collapse in={this.state.open}>
-          <div id="example-collapse-text" className="collapsePanel">
-            {todo.description}
-          </div>
-        </Collapse>
+
+        <TodoEditor
+          title={title}
+          dateUntil={dateUntil}
+          isImportant={isImportant}
+          todoId={todoId}
+          show={this.state.showModalEdit}
+          handleClose={this.handleClose}
+          handleShow={this.handleShow}
+          onGetTodos={this.props.onGetTodos}
+        />
       </div>
     );
   }
