@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button } from "react-bootstrap";
+import { displayToast } from "../helpers/displayToast";
 import axios from "axios";
 
 import "../styles/TodoCreator.css";
@@ -51,7 +52,8 @@ class TodoCreator extends Component {
   handleSubmitTodo = e => {
     e.preventDefault();
     const todo = { ...this.state.todo };
-    if (todo.title) {
+    const { toastManager } = this.props;
+    if (todo.title.length >= 2) {
       axios
         .post("http://localhost:5000/api/todo", {
           title: todo.title,
@@ -66,8 +68,16 @@ class TodoCreator extends Component {
               isImportant: false
             }
           });
+          displayToast(
+            toastManager,
+            "Succesfully created the task.",
+            "success"
+          );
           this.props.onHandleAddTodo();
-        });
+        })
+        .catch(err =>
+          displayToast(toastManager, "Could not create the task.", "error")
+        );
     }
   };
 
@@ -109,7 +119,7 @@ class TodoCreator extends Component {
             />
           </Form.Group>
 
-          <Button type="submit">Add Todo</Button>
+          <Button type="submit">Add task</Button>
         </Form>
       </div>
     );

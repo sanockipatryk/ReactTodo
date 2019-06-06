@@ -28,6 +28,7 @@ div.todo .todoToolbar .todoTitleJumbotron {
   border-bottom-left-radius: 5px;
   border: 1px solid black;
   border-right: none;
+  transition: 0.2s;
 }
 
 div.todo .todoToolbar .todoTitleJumbotron.important {

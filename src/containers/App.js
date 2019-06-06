@@ -14,7 +14,7 @@ function App() {
       <ToastProvider>
         <div className="app">
           <Header />
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={withToastManager(Home)} />
           <Route
             exact
             path="/register"

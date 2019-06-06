@@ -3,3 +3,13 @@ div.home {
   max-width: 1240px;
   margin: 50px auto;
 }
+
+@media (max-width: 600px) {
+  .welcomeBox {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+  .welcomeBox h1 {
+    font-size: 22px;
+  }
+}

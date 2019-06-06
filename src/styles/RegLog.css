@@ -22,3 +22,14 @@ div.regLog form label {
 div.regLog form label span {
   margin-right: 10px;
 }
+
+@media (max-width: 600px) {
+  div.regLog {
+    max-width: 260px;
+    min-width: 260px;
+  }
+
+  div.regLog form {
+    padding: 15px 10px;
+  }
+}

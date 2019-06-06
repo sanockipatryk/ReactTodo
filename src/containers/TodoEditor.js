@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Modal, Form } from "react-bootstrap";
+import { displayToast } from "../helpers/displayToast";
 import axios from "axios";
 
 class TodoEditor extends Component {
@@ -57,19 +58,31 @@ class TodoEditor extends Component {
 
   handleSumbitEdit = e => {
     const { title, dateUntil, isImportant } = this.state;
-    const { todoId } = this.props;
+    const { todoId, toastManager } = this.props;
+
     e.preventDefault();
-    axios
-      .put(`http://localhost:5000/api/todo/edit/${todoId}`, {
-        title,
-        dateUntil,
-        isImportant
-      })
-      .then(response => {
-        console.log(response);
-        this.props.handleClose();
-        this.props.onGetTodos();
-      });
+    if (title.length >= 2) {
+      axios
+        .put(`http://localhost:5000/api/todo/edit/${todoId}`, {
+          title,
+          dateUntil,
+          isImportant
+        })
+        .then(response => {
+          this.props.handleClose();
+          this.props.onGetTodos();
+          displayToast(toastManager, "Succesfully edited the task.", "success");
+        })
+        .catch(err => {
+          displayToast(toastManager, "Could not edit the task.", "error");
+        });
+    } else {
+      displayToast(
+        toastManager,
+        "Title has to be at least two characters long.",
+        "error"
+      );
+    }
   };
 
   render() {
@@ -77,7 +90,7 @@ class TodoEditor extends Component {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Make changes to the todo</Modal.Title>
+          <Modal.Title>Make changes to the task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={this.handleSubmitTodo}>

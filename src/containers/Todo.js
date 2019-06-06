@@ -97,6 +97,7 @@ class Todo extends Component {
           handleClose={this.handleClose}
           handleShow={this.handleShow}
           onGetTodos={this.props.onGetTodos}
+          toastManager={this.props.toastManager}
         />
       </div>
     );
