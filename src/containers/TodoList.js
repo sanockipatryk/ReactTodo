@@ -54,7 +54,7 @@ class TodoList extends Component {
         dateUntil={todo.dateuntil}
         dateFinished={todo.datefinished}
         isCompleted={todo.iscompleted}
-        isImportant={todo.isimportant}
+        isImportant={todo.important}
         onDelete={this.handleDeleteTodo}
         onComplete={this.handleCompleteTodo}
         onGetTodos={this.handleGetTodos}
@@ -63,10 +63,12 @@ class TodoList extends Component {
     return (
       <Container>
         <Row>
-          <Col lg={4}>
+          <Col lg={12}>
             <TodoCreator onHandleAddTodo={this.handleGetTodos} />
           </Col>
-          <Col className="todoList">{todolist}</Col>
+          <Col lg={12} className="todoList">
+            {todolist}
+          </Col>
         </Row>
       </Container>
     );

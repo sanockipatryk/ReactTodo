@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { ButtonGroup, Button, Jumbotron } from "react-bootstrap";
+import { ButtonGroup, ButtonToolbar, Button, Jumbotron } from "react-bootstrap";
 import TodoEditor from "./TodoEditor";
+import Countdown from "react-countdown-now";
 import "../styles/Todo.css";
 
 class Todo extends Component {
@@ -33,10 +34,14 @@ class Todo extends Component {
     } = this.props;
     return (
       <div className="todo">
-        <ButtonGroup className="todoBtnGroup">
+        <ButtonToolbar className="todoToolbar">
           <Jumbotron
             className={
-              isCompleted
+              isImportant
+                ? isCompleted
+                  ? "todoTitleJumbotron important completed"
+                  : "todoTitleJumbotron important"
+                : isCompleted
                 ? "todoTitleJumbotron completed"
                 : "todoTitleJumbotron"
             }
@@ -49,21 +54,40 @@ class Todo extends Component {
           >
             <p>{title}</p>
           </Jumbotron>
-          {isCompleted ? null : (
-            <>
-              <Button variant="success" onClick={() => onComplete(todoId)}>
-                <i className="far fa-check-square" />
-              </Button>
-              <Button variant="primary" onClick={this.handleShow}>
-                <i className="far fa-edit" />
-              </Button>
-            </>
-          )}
-          <Button variant="danger" onClick={() => onDelete(todoId)}>
-            <i className="far fa-trash-alt" />
-          </Button>
-        </ButtonGroup>
-
+          <ButtonGroup className="todoBtnGroup">
+            {isCompleted ? null : (
+              <>
+                {dateUntil ? (
+                  <Button variant="warning">
+                    <i className="far fa-clock" />{" "}
+                    <Countdown date={Date.parse(dateUntil)} intervalDelay={0} />
+                  </Button>
+                ) : null}
+                <Button
+                  variant="success"
+                  title="Complete"
+                  onClick={() => onComplete(todoId)}
+                >
+                  <i className="far fa-check-square" />
+                </Button>
+                <Button
+                  variant="primary"
+                  title="Edit"
+                  onClick={this.handleShow}
+                >
+                  <i className="far fa-edit" />
+                </Button>
+              </>
+            )}
+            <Button
+              variant="danger"
+              title="Remove"
+              onClick={() => onDelete(todoId)}
+            >
+              <i className="far fa-trash-alt" />
+            </Button>
+          </ButtonGroup>
+        </ButtonToolbar>
         <TodoEditor
           title={title}
           dateUntil={dateUntil}

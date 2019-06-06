@@ -77,7 +77,7 @@ class TodoEditor extends Component {
     return (
       <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit {title}</Modal.Title>
+          <Modal.Title>Make changes to the todo</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={this.handleSubmitTodo}>

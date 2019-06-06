@@ -1,5 +1,6 @@
 div.todo {
   margin: 15px 0;
+  box-sizing: border-box;
 }
 
 div.todo button.btn {
@@ -11,54 +12,49 @@ div.todo button.btn:focus {
   box-shadow: none;
 }
 
-div.todo #collapseTodoInformation {
-  border: 1px solid grey;
-  padding: 10px;
-  border-bottom-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
-}
-
-div.todo .todoBtnGroup {
+div.todo .todoToolbar {
   width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
-div.todo .todoBtnGroup button {
-  padding-left: 14px;
-  padding-right: 14px;
-
-  text-align: center;
-}
-
-div.todo .todoBtnGroup button:nth-child(1) {
-  width: 100%;
-  text-align: left;
-}
-/* div.todo .todoBtnGroup button:nth-child(1):hover {
-  background-color: ;
-} */
-
-div.todo .todoBtnGroup .todoTitleJumbotron {
-  padding: 0;
+div.todo .todoToolbar .todoTitleJumbotron {
   margin: 0;
+  padding: 0 10px;
+  flex-grow: 1;
+  background-color: #fff;
+  text-transform: uppercase;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
-  border: 1px solid grey;
-  width: 100%;
+  border: 1px solid black;
+  border-right: none;
 }
 
-div.todo .todoBtnGroup .todoTitleJumbotron.completed {
+div.todo .todoToolbar .todoTitleJumbotron.important {
+  border: 1px solid red;
+  border-right: none;
+  font-weight: bold;
+  color: red;
+}
+
+div.todo .todoToolbar .todoTitleJumbotron.completed {
   background-color: #28a745;
   color: white;
-  text-decoration: line-through;
+  border: 1px solid black;
+  font-weight: normal;
+  border-right: none;
 }
-
-div.todo .todoBtnGroup .todoTitleJumbotron p {
-  line-height: 40px;
-  padding: 0 10px;
+div.todo .todoToolbar .todoTitleJumbotron p {
   margin: 0;
-  text-transform: uppercase;
+  line-height: 40px;
+  word-break: break-all;
 }
 
-p.pushRight {
-  text-align: right;
+div.todo .todoToolbar .todoBtnGroup button {
+  border-radius: 0%;
+}
+
+div.todo .todoToolbar .todoBtnGroup button:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }

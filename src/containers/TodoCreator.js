@@ -60,9 +60,11 @@ class TodoCreator extends Component {
         })
         .then(response => {
           this.setState({
-            title: "",
-            dateUntil: "",
-            isImportant: false
+            todo: {
+              title: "",
+              dateUntil: "",
+              isImportant: false
+            }
           });
           this.props.onHandleAddTodo();
         });
@@ -72,8 +74,8 @@ class TodoCreator extends Component {
   render() {
     return (
       <div>
-        <Form onSubmit={this.handleSubmitTodo}>
-          <Form.Group controlId="formBasicEmail">
+        <Form className="todoCreator" onSubmit={this.handleSubmitTodo}>
+          <Form.Group>
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="text"
