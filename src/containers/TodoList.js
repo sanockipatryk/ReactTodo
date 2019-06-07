@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Todo from "../containers/Todo";
 import TodoCreator from "../containers/TodoCreator";
+import TodoSort from "../containers/TodoSort";
 import { Container, Row, Col } from "react-bootstrap";
 import { displayToast } from "../helpers/displayToast";
 import axios from "axios";
@@ -9,12 +10,26 @@ import "../styles/TodoList.css";
 
 class TodoList extends Component {
   state = {
-    todos: []
+    todos: [],
+    sortBy: 1,
+    hideCompleted: false
   };
 
   componentDidMount() {
     this.handleGetTodos();
   }
+
+  handleChangeSort = e => {
+    this.setState({
+      sortBy: e.target.value
+    });
+  };
+
+  handleChangeHideCompleted = e => {
+    this.setState({
+      hideCompleted: e.target.checked
+    });
+  };
 
   handleGetTodos = () => {
     const { toastManager } = this.props;
@@ -65,8 +80,43 @@ class TodoList extends Component {
       );
   };
 
-  render() {
-    const todolist = this.state.todos.map(todo => (
+  sortedTodos = () => {
+    switch (this.state.sortBy) {
+      case "1":
+        return this.state.todos.sort(function(a, b) {
+          return new Date(b.dateadded) - new Date(a.dateadded);
+        });
+      case "2":
+        return this.state.todos.sort(function(a, b) {
+          return new Date(a.dateadded) - new Date(b.dateadded);
+        });
+      case "3":
+        return this.state.todos.sort(function(a, b) {
+          if (a.title.toLowerCase() < b.title.toLowerCase()) {
+            return -1;
+          }
+          if (a.title.toLowerCase() > b.title.toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
+      case "4":
+        return this.state.todos.sort(function(a, b) {
+          if (b.title.toLowerCase() < a.title.toLowerCase()) {
+            return -1;
+          }
+          if (b.title.toLowerCase() > a.title.toLowerCase()) {
+            return 1;
+          }
+          return 0;
+        });
+      default:
+        return this.state.todos;
+    }
+  };
+
+  getTodoList = (todos = this.sortedTodos()) => {
+    return todos.map(todo => (
       <Todo
         key={todo.id}
         todoId={todo.id}
@@ -82,6 +132,20 @@ class TodoList extends Component {
         toastManager={this.props.toastManager}
       />
     ));
+  };
+
+  render() {
+    let todolist;
+    if (this.state.hideCompleted) {
+      todolist = this.getTodoList(
+        this.sortedTodos().filter(todo => {
+          return !todo.iscompleted;
+        })
+      );
+    } else {
+      todolist = this.getTodoList();
+    }
+
     return (
       <Container>
         <Row>
@@ -92,6 +156,15 @@ class TodoList extends Component {
             />
           </Col>
           <Col lg={12} className="todoList">
+            {this.state.todos.length > 0 ? (
+              <TodoSort
+                hideCompleted={this.state.hideCompleted}
+                onChangeHideCompleted={this.handleChangeHideCompleted}
+                sortBy={this.state.sortBy}
+                onChangeSort={this.handleChangeSort}
+              />
+            ) : null}
+
             {todolist}
           </Col>
         </Row>

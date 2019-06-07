@@ -18,16 +18,22 @@ class TodoCreator extends Component {
   }
 
   getMinDate = () => {
-    const currentDate = new Date().toISOString();
-    let dateArray = currentDate.slice(0, 16);
+    const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    const localISOTime = new Date(Date.now() - tzoffset)
+      .toISOString()
+      .slice(0, -1);
+    let dateArray = localISOTime.slice(0, 16);
     return dateArray;
   };
 
   getMaxDate = () => {
-    let currentDate = new Date(
-      Date.now() + 1000 * 60 * 60 * 24 * 366
-    ).toISOString();
-    let dateArray = currentDate.slice(0, 16);
+    const tzoffset = new Date().getTimezoneOffset() * 60000; //offset in milliseconds
+    const localISOTime = new Date(
+      Date.now() + 1000 * 60 * 60 * 24 * 366 - tzoffset
+    )
+      .toISOString()
+      .slice(0, -1);
+    let dateArray = localISOTime.slice(0, 16);
     return dateArray;
   };
 
